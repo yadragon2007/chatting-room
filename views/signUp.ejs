@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>chatting room</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="background.css">
+  <!-- fontawesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+  <%- include('./partials/background.ejs') %>
+
+
+  <!-- container -->
+  <div class="container">
+    <%- include('./partials/nav.ejs') %>
+
+    <div class="content">
+      <form action="" class="acc-form">
+        <div class="title">
+          <h2>sign up</h2>
+        </div>
+        <div class="login-user">
+          <div class="center">
+            <label for="fullName">user name</label>
+            <input type="text" name="fullName" class="input" id="fullName" placeholder="full Name" required>
+            <label for="userName">user name</label>
+            <input type="text" name="userName" class="input" id="userName" placeholder="user Name" required>
+            <label for="password">password</label>
+            <input type="password" name="password" class="input" id="password" placeholder="password" required>
+            <input type="submit" class="submit" value="sign up">
+            <div class="singUpLink">
+              <a href="./login.html">already have account ?</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="hr">
+          <div class=""></div>
+          <p>or</p>
+          <div class=""></div>
+        </div>
+        <div class="login-google">
+          <a href="#"><i class="fa-brands fa-google"></i>
+            <p>google</p>
+          </a>
+        </div>
+
+      </form>
+    </div>
+    <%- include('./partials/footer.ejs') %>
+
+  </div>
+</body>
+
+</html>
