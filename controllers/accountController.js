@@ -26,7 +26,9 @@ const signUp_signUp_post = async (req, res) => {
     // save data into the data base
     const userData = await account.save();
     // save user Data in the cookies
-    res.cookie("userData", userData);
+    res.cookie("userData", userData, {
+      maxAge: 999999999999999,
+    });
     // redirect to the home page
     res.redirect("/");
   } else {
@@ -43,7 +45,9 @@ const login_login_post = async (req, res) => {
     const validPass = await bcrypt.compare(password, account.password);
     if (validPass == true) {
       // save data into cookies
-      res.cookie("userData", account);
+      res.cookie("userData", account, {
+        maxAge: 999999999999999,
+      });
       res.redirect("/");
     } else {
       res.redirect("/login/err/password");
@@ -53,11 +57,10 @@ const login_login_post = async (req, res) => {
   }
 };
 
-
-const logout_login_get = (req,res) => {
-  res.clearCookie('userData')
-  res.redirect('/')
-}
+const logout_login_get = (req, res) => {
+  res.clearCookie("userData");
+  res.redirect("/");
+};
 module.exports = {
   login_login_get,
   signUp_signUp_get,

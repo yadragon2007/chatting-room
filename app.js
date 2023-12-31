@@ -1,24 +1,23 @@
 const express = require("express");
 const path = require("path");
-const http = require('http');
-const socketIO = require('socket.io');
+const http = require("http");
+const socketIO = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-
 /* ------------------------------- realtime  -------------------------*/
-io.on('connection', (socket)=>{
-  console.log("a user connected via socket!")
-  socket.on('disconnect', ()=>{
-      console.log("a user disconnected!")
-  })
-  socket.on('chat message', (msg)=>{
-      console.log("Message: "+msg)
-      io.emit('chat message', msg)
-  })
-})
+io.on("connection", (socket) => {
+  console.log("a user connected via socket!");
+  socket.on("disconnect", () => {
+    console.log("a user disconnected!");
+  });
+  socket.on("chat message", (msg) => {
+    console.log("Message: " + msg);
+    io.emit("chat message", msg);
+  });
+});
 
 /* ------------------------------- Env -------------------------*/
 const { database, google } = require("./config/env");
@@ -81,7 +80,9 @@ app.get(
   function (req, res) {
     const userData = req.user;
     // add cookies
-    res.cookie("userData", userData);
+    res.cookie("userData", userData, {
+      maxAge: 999999999999999,
+    });
     // Successful authentication, redirect home.
     res.redirect("/");
   }
@@ -98,7 +99,6 @@ app.use(account);
 // chat room
 const chattingRoom = require("./routes/chattingRoom");
 app.use(chattingRoom);
-
 
 // 404
 app.use((req, res) => {
