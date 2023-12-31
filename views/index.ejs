@@ -10,7 +10,7 @@
   <!-- fontawesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
-    .container{
+    .container {
       min-height: 100vh;
       height: auto;
     }
@@ -18,53 +18,66 @@
 </head>
 
 <body onload="scroll()">
-  <%- include('./partials/background.ejs') %>
+  <%# include('./partials/background.ejs') %>
 
-  <!-- container -->
-  <div class="container">
-    <%- include('./partials/nav.ejs') %>
-    <div class="content">
-      <div class="chat-room">
-        <div class="messages" id="messages">
-          <div class="message-container sender">
-            <div class="message">
-              <div class="message-name">yousef amr</div>
-              <div class="message-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure iusto assumenda quo, impedit dolore ex suscipit aliquam deleniti? Ut illum excepturi explicabo impedit odio placeat quia non nobis aperiam iusto.</div>
-              <div class="message-time">05:30</div>
+    <!-- container -->
+    <div class="container">
+      <%- include('./partials/nav.ejs') %>
+        <div class="content">
+          <div class="chat-room">
+            <div class="messages" id="messages">
+              <div class="message-container sender">
+                <div class="message">
+                  <div class="message-name">yousef amr</div>
+                  <div class="message-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure iusto
+                    assumenda quo, impedit dolore ex suscipit aliquam deleniti? Ut illum excepturi explicabo impedit
+                    odio placeat quia non nobis aperiam iusto.</div>
+                  <div class="message-time">05:30</div>
+                </div>
+              </div>
+              <div class="message-container sender">
+                <div class="message">
+                  <div class="message-name">yousef amr</div>
+                  <div class="message-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure iusto
+                    assumenda quo, impedit dolore ex suscipit aliquam deleniti? Ut illum excepturi explicabo impedit
+                    odio placeat quia non nobis aperiam iusto.</div>
+                  <div class="message-time">05:30</div>
+                </div>
+              </div>
+              <div class="message-container sender">
+                <div class="message">
+                  <div class="message-name">yousef amr</div>
+                  <div class="message-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure iusto
+                    assumenda quo, impedit dolore ex suscipit aliquam deleniti? Ut illum excepturi explicabo impedit
+                    odio placeat quia non nobis aperiam iusto.</div>
+                  <div class="message-time">05:30</div>
+                </div>
+              </div>
+              <div class="message-container resaver">
+                <div class="message">
+                  <div class="message-name">yousef amr</div>
+                  <div class="message-content">hi</div>
+                  <div class="message-time">05:30</div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="message-container sender">
-            <div class="message">
-              <div class="message-name">yousef amr</div>
-              <div class="message-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure iusto assumenda quo, impedit dolore ex suscipit aliquam deleniti? Ut illum excepturi explicabo impedit odio placeat quia non nobis aperiam iusto.</div>
-              <div class="message-time">05:30</div>
-            </div>
-          </div>
-          <div class="message-container sender">
-            <div class="message">
-              <div class="message-name">yousef amr</div>
-              <div class="message-content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure iusto assumenda quo, impedit dolore ex suscipit aliquam deleniti? Ut illum excepturi explicabo impedit odio placeat quia non nobis aperiam iusto.</div>
-              <div class="message-time">05:30</div>
-            </div>
-          </div>
-          <div class="message-container resaver">
-            <div class="message">
-              <div class="message-name">yousef amr</div>
-              <div class="message-content">hi</div>
-              <div class="message-time">05:30</div>
+            <div class="send-message">
+              <input type="text" name="msg" placeholder="Type your message..." autofocus required />
+              <button onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
             </div>
           </div>
         </div>
-        <div class="send-message">
-          <input type="text" name="msg" placeholder="Type your message..." autofocus required/>
-          <button onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
-        </div>
-      </div>
+        <%- include('./partials/footer.ejs') %>
     </div>
-    <%- include('./partials/footer.ejs') %>
-  </div>
 
-  <script src="main.js"></script>
+    <script src="main.js"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <!-- <script src="socket.io/socket.io.js"></script> -->
+    <!-- <script src="../node_modules/socket.io/client-dist/socket.io.js"></script> -->
+
+    <script>
+      const socket = io();
+    </script>
 </body>
 
 </html>

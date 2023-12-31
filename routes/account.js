@@ -1,10 +1,13 @@
-const express = require('express');
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
-const account = require('../controllers/accountController')
+const account = require("../controllers/accountController");
 
-// router.get("/login",)
+router.get("/login", account.login_login_get);
+router.get("/signup", account.signUp_signUp_get);
+router.post("/signup", account.signUp_signUp_post);
+router.post("/login", account.login_login_post);
+router.get("/logout", account.logout_login_get);
 
 
-
-module.exports = router
+module.exports = router;

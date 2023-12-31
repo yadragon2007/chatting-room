@@ -1,27 +1,52 @@
 const express = require("express");
+const path = require("path");
 const app = express();
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
 
 
-// dotenv
-const { database } = require("./config/env");
-// html pages
-const ejs = require('ejs');
+/* ------------------------------- realtime  -------------------------*/
+io.on('connection', (socket)=>{
+  console.log("a user connected via socket!")
+  socket.on('disconnect', ()=>{
+      console.log("a user disconnected!")
+  })
+  socket.on('chat message', (msg)=>{
+      console.log("Message: "+msg)
+      io.emit('chat message', msg)
+  })
+})
+
+/* ------------------------------- Env -------------------------*/
+const { database, google } = require("./config/env");
+/* ------------------------------- view engine -------------------------*/
+const ejs = require("ejs");
 app.set("view engine", "ejs");
-// static files
-app.use(express.static("public"));
+app.set("views", path.join(__dirname, "views"));
+/* ------------------------------- static files -------------------------*/
+app.use(express.static(path.join(__dirname, "public")));
+
+/* ------------------------------- Handling Middleware -------------------------*/
+
 // cookies
-const cookieParser = require("cookie-parser")
+const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 // handle json format
-app.use(express.json())
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+// express session
+const session = require("express-session");
+app.set("trust proxy", 1); // trust first proxy
+app.use(
+  session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true },
+  })
+);
 
-
-
-
-
-
-
-// data base
+/* ------------------------------- Data Base -------------------------*/
 const mongoose = require("mongoose");
 mongoose
   .connect(
@@ -37,17 +62,42 @@ mongoose
     console.log(err);
   });
 
+/* ------------------------------- google login -------------------------*/
 
+const passport = require("passport");
+require("./config/passportGoogle");
 
-// router
+app.get(
+  "/login/google",
+  passport.authenticate("google", { scope: ["profile"] })
+);
+
+app.get(
+  "/login/google/callBack",
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  function (req, res) {
+    const userData = req.user;
+    // add cookies
+    res.cookie("userData", userData);
+    // Successful authentication, redirect home.
+    res.redirect("/");
+  }
+);
+
+/* ------------------------------- router -------------------------*/
+
+// home
 const home = require("./routes/home");
-app.use(home)
-
-
+app.use(home);
+// account
+const account = require("./routes/account");
+app.use(account);
+// chat room
+const chattingRoom = require("./routes/chattingRoom");
+app.use(chattingRoom);
 
 
 // 404
 app.use((req, res) => {
-  res.status(404).send('not found')
+  res.status(404).send("not found");
 });
-

@@ -1,10 +1,14 @@
-const homePage_index_get = (req, res) => {
-  const { userData } = res.cookie;
+const Accounts = require("../models/accountModel");
+
+const homePage_index_get = async (req, res) => {
+  const { userData } = req.cookies;
 
   if (userData) {
-    res.redirect("/chatRoom")
+    const account = await Accounts.findById(userData._id);
+    res.cookie("userData", account);
+    res.redirect("/PublicChatRoom");
   } else {
-    res.redirect("/login")
+    res.redirect("/login");
   }
 };
 

@@ -12,50 +12,50 @@
 </head>
 
 <body>
-  <%- include('./partials/background.ejs') %>
+  <%# include('./partials/background.ejs') %>
 
 
-  <!-- container -->
-  <div class="container">
-    <%- include('./partials/nav.ejs') %>
+    <!-- container -->
+    <div class="container">
+      <%- include('./partials/nav.ejs') %>
 
-    <div class="content">
-      <form action="" class="acc-form">
-        <div class="title">
-          <h2>login</h2>
-        </div>
-        <div class="login-user">
-          <div class="center">
-            <label for="userName">
-              user name
-            </label>
-            <input type="text" name="password" class="input" id="userName" placeholder="user Name" required>
-            <label for="password">password</label>
-            <input type="password" name="password" class="input" id="password" placeholder="password" required>
-            <input type="submit" class="submit" value="login">
-            <div class="singUpLink">
-              <a href="./signUp.html">do not have account ?</a>
+        <div class="content">
+          <form action="/login" method="post" class="acc-form">
+            <div class="title">
+              <h2>sign in</h2>
             </div>
-          </div>
+            <div class="login-user">
+              <div class="center">
+                <label for="userName">
+                  user name
+                </label>
+                <input type="text" name="userName" class="input" id="userName" placeholder="user Name" required>
+                <label for="password">password</label>
+                <input type="password" name="password" class="input" id="password" placeholder="password" required>
+                <input type="submit" class="submit" value="sing in">
+                <div class="singUpLink">
+                  <a href="/signup">do not have account ?</a>
+                </div>
+              </div>
 
-        </div>
+            </div>
 
-        <div class="hr">
-          <div class=""></div>
-          <p>or</p>
-          <div class=""></div>
+            <div class="hr">
+              <div class=""></div>
+              <p>or</p>
+              <div class=""></div>
+            </div>
+              <div class="login-google login-method">
+                <a href="/login/google"><i class="fa-brands fa-google"></i>
+                  <p>google</p>
+                </a>
+              </div>
+              
+          </form>
         </div>
-        <div class="login-google">
-          <a href="#"><i class="fa-brands fa-google"></i>
-            <p>google</p>
-          </a>
-        </div>
+        <%- include('./partials/footer.ejs') %>
 
-      </form>
     </div>
-    <%- include('./partials/footer.ejs') %>
-
-  </div>
 </body>
 
 </html>

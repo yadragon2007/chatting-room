@@ -16,7 +16,9 @@
   justify-content: space-between;
   align-items: center;
   font-family: sans-serif;
-
+  background-image: url("/img/back-ground2.jpg");
+  background-size: cover;
+  /* background-position: center; */
 }
 
 /* nav */
@@ -25,7 +27,7 @@
   height: 50px;
   display: flex;
   align-items: center;
-  
+
 }
 
 .container nav h1 {
@@ -34,7 +36,7 @@
   font-family: sans-serif;
   margin: 0 0 0 10px;
   font-weight: 800;
-  color: #8ECDDD;
+  color: #dfdfdf;
 }
 
 /* content */
@@ -57,7 +59,7 @@
   display: grid;
   grid-template-rows: 2.5fr 3.5fr 1fr 2fr;
   gap: 15px;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(3px);
   -webkit-box-shadow: inset 0px 0px 113px -18px rgba(142, 205, 221, 0.47);
   -moz-box-shadow: inset 0px 0px 113px -18px rgba(142, 205, 221, 0.47);
   box-shadow: inset 0px 0px 113px -18px rgba(142, 205, 221, 0.47);
@@ -70,7 +72,7 @@
   justify-content: center;
   align-items: center;
   font-size: 24px;
-  color: #8ECDDD;
+  color: #dfdfdf;
   text-transform: uppercase;
   font-weight: 850;
 }
@@ -142,16 +144,16 @@
   background-image: linear-gradient(to right, #ffffff, #dfdfdf);
 }
 
+
 .container .content .acc-form .login-google {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: start;
 
 }
 
 .container .content .acc-form .login-google a {
-  min-width: 120px;
-
+  min-width: 40%;
   text-decoration: none;
   text-transform: capitalize;
   color: #dfdfdf;
@@ -159,8 +161,9 @@
   padding: 10px 20px;
   border-radius: 20px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  gap: 10px;
   transition: .5s;
 }
 
@@ -272,8 +275,9 @@
   color: #dfdfdf;
   font-size: 14px;
 }
-.container .content .chat-room .send-message input::placeholder{
-  color:#dfdfdf;
+
+.container .content .chat-room .send-message input::placeholder {
+  color: #dfdfdf;
 }
 
 .container .content .chat-room .send-message button {
@@ -286,9 +290,14 @@
 
 
 @media screen and (max-width:500px) {
-  .container nav{
+  .container nav {
     justify-content: center;
   }
+
+  .container nav h1 {
+    margin: 0;
+  }
+
   .container .content .chat-room .send-message input {
     width: calc(100% - 60px);
 
