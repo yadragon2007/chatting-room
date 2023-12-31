@@ -1,8 +1,11 @@
 const express = require("express");
 const path = require("path");
+const http = require('http');
+const socketIO = require('socket.io');
+
 const app = express();
-const server = require("http").createServer(app);
-const io = require("socket.io")(server);
+const server = http.createServer(app);
+const io = socketIO(server);
 
 
 /* ------------------------------- realtime  -------------------------*/
@@ -54,7 +57,7 @@ mongoose
   )
   .then(() => {
     const port = database.port || 8080;
-    app.listen(port, () => {
+    server.listen(port, () => {
       console.log(`http://127.0.0.1:${port}/`);
     });
   })
