@@ -61,6 +61,11 @@ const logout_login_get = (req, res) => {
   res.clearCookie("userData");
   res.redirect("/");
 };
+
+
+
+
+
 module.exports = {
   login_login_get,
   signUp_signUp_get,
