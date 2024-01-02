@@ -8,21 +8,9 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 /* ------------------------------- realtime  -------------------------*/
-const { sendMsgPublic } = require("./controllers/chattingRoomController");
+const socketManager = require("./controllers/socket.io.Controller");
 
-io.on("connection", (socket) => {
-  console.log("a user connected via socket!");
-  socket.on("disconnect", () => {
-    console.log("a user disconnected!");
-  });
-
-  socket.on("public msg", async (msg, senderId) => {
-    // save Data on data base
-    const data = await sendMsgPublic(msg, senderId);
-    // send message to everyone in public chatroom
-    io.emit("public msg", data, senderId);
-  });
-});
+socketManager(io)
 
 /* ------------------------------- Env -------------------------*/
 const { database } = require("./config/env");
