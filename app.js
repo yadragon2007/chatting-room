@@ -95,5 +95,5 @@ app.use(chattingRoom);
 
 // 404
 app.use((req, res) => {
-  res.status(404).send("not found");
+  res.status(404).render("404");
 });

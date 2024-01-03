@@ -1,77 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>chatting room</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="background.css">
-  <!-- fontawesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <style>
-    .container {
-      min-height: 100vh;
-      height: auto;
-    }
-  </style>
-</head>
+<%- include('./partials/head.ejs') %>
 
-<body onload="scroll()">
-  <%# include('./partials/background.ejs') %>
-    <input type="hidden" id="id" value="<%= userData._id %>">
-    <!-- container -->
-    <div class="container">
-      <%- include('./partials/nav.ejs') %>
-        <div class="content">
-          <div class="chat-room">
-            <div class="messages" id="messages">
+  </head>
 
-              <% msg.forEach(message=> { %>
-                <% if (message.senderData.id==userData._id) { %>
-                
-                  <div class="message-container sender">
-                    <div class="message">
-                      <div class="message-name"><%= message.senderData.name %></div>
-                      <div class="message-content"><%= message.message %></div>
-                      <div class="message-time"><%= message.Time %></div>
-                    </div>
-                  </div>
-
-                  <% } else { %>
-                    <div class="message-container resaver">
-                      <div class="message">
-                        <div class="message-name"><%= message.senderData.name %></div>
-                        <div class="message-content"><%= message.message %></div>
-                        <div class="message-time"><%= message.Time %></div>
-                      </div>
-                    </div>
-                    <% } %>
-                      <% }) %>
-
-
-
-
+  <body onload="scroll()">
+    <%# include('./partials/background.ejs') %>
+      <input type="hidden" id="id" value="<%= userData._id %>">
+      <!-- container -->
+      <div class="container">
+        <%- include('./partials/nav.ejs') %>
+          <div class="home-content">
+            <div class="profile">
+              <div class="img">
+                <img src="/img/328157463_136435589294620_7570663161007041273_n.webp" alt="">
+              </div>
+              <div class="profile-content">
+                <h1>
+                  <%= userData.fullName %>
+                </h1>
+                <a href="/profile/edit">setings <i class="fa-solid fa-gear fa-spin"></i></a>
+              </div>
             </div>
-            <div class="send-message">
-              <input type="text" id="msg" placeholder="Type your message..." autofocus required />
-              <button onclick="sendMessage(this.id)" id="<%= userData._id %>"><i
-                  class="fa-solid fa-paper-plane"></i></button>
+            <div class="rooms">
+              <h1>rooms</h1>
+              <a href="/publicChatRoom" class="room">
+                publicChatRoom 
+              </a>
             </div>
+
+
           </div>
-        </div>
-        <%- include('./partials/footer.ejs') %>
-    </div>
+          <%- include('./partials/footer.ejs') %>
+      </div>
 
 
 
 
 
-    <script src="main.js"></script>
-    <script src="socket.io.js"></script>
-    <script>
-      const socket = io();
-    </script>
+      <script src="main.js"></script>
+      <script src="socket.io.js"></script>
+      <script>
+        const socket = io();
+      </script>
   </body>
 
 </html>

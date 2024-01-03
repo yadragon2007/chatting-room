@@ -6,7 +6,9 @@ const homePage_index_get = async (req, res) => {
   if (userData) {
     const account = await Accounts.findById(userData._id);
     res.cookie("userData", account);
-    res.redirect("/PublicChatRoom");
+    res.render("index", {
+      userData:account,
+    });
   } else {
     res.redirect("/login");
   }
