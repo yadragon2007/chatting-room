@@ -1,24 +1,38 @@
 const Accounts = require("../models/accountModel");
-const publicChat = require("../models/publicChatSchema.js");
+const ChatRoom = require("../models/ChatRoomsSchema.js");
 const { time } = require("../API/Time");
 
-const publicChatRoom_index_get = async (req, res) => {
+const createChatRoom_index_post = async (req, res) => {
   const { userData } = req.cookies;
-  // check if user is logged in
+  const { roomName } = req.body;
+
   if (!userData) {
     res.redirect("/login");
   } else {
-    const User = await Accounts.findById(userData._id);
-    const msg = await publicChat.find();
+    const chatRoomData = {
+      roomName,
+      admin: userData._id,
+    };
+    const chatRoom = new ChatRoom(chatRoomData);
+    await chatRoom.save();
 
-    res.render("publicRoom", {
-      title: "Public Chat Room",
-      userData: User,
-      msg,
-    });
+    res.redirect("/");
   }
+};
+const JoinChatRoom_publicRoom_get = async (req, res) => {
+  const { roomId } = req.params;
+  const { userData } = req.cookies;
+
+  const roomData = await ChatRoom.findById(roomId);
+
+  res.render("publicRoom", {
+    roomData,
+    userData,
+    messages: roomData.messages,
+  });
 };
 
 module.exports = {
-  publicChatRoom_index_get,
+  createChatRoom_index_post,
+  JoinChatRoom_publicRoom_get,
 };

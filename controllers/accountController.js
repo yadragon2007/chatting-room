@@ -27,6 +27,7 @@ const signUp_signUp_post = async (req, res) => {
     const userData = await account.save();
     // save user Data in the cookies
     res.cookie("userData", userData, {
+      secure: true,
       maxAge: 999999999999999,
     });
     // redirect to the home page
@@ -46,6 +47,7 @@ const login_login_post = async (req, res) => {
     if (validPass == true) {
       // save data into cookies
       res.cookie("userData", account, {
+        secure: true,
         maxAge: 999999999999999,
       });
       res.redirect("/");
@@ -61,10 +63,6 @@ const logout_login_get = (req, res) => {
   res.clearCookie("userData");
   res.redirect("/");
 };
-
-
-
-
 
 module.exports = {
   login_login_get,

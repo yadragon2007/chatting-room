@@ -5,45 +5,103 @@
 
   </head>
 
-  <body onload="scroll()">
-    <%# include('./partials/background.ejs') %>
-      <input type="hidden" id="id" value="<%= userData._id %>">
-      <!-- container -->
-      <div class="container">
-        <%- include('./partials/nav.ejs') %>
-          <div class="home-content">
-            <div class="profile">
-              <div class="img">
-                <img src="/img/328157463_136435589294620_7570663161007041273_n.webp" alt="">
-              </div>
-              <div class="profile-content">
-                <h1>
-                  <%= userData.fullName %>
-                </h1>
-                <a href="/profile/edit">setings <i class="fa-solid fa-gear fa-spin"></i></a>
-              </div>
-            </div>
-            <div class="rooms">
-              <h1>rooms</h1>
-              <a href="/publicChatRoom" class="room">
-                publicChatRoom 
-              </a>
-            </div>
+  <body>
+    <input type="hidden" id="id" value="<%= userData._id %>">
+    <div class="createRoom-container" id="createRoom-container" style="display: none;">
+      <form action="/chatRoom/create" method="post">
+        <h3>create room</h3>
+        <!-- <label for="roomName">Room Name:</label> -->
+        <input type="text" id="roomName" name="roomName" placeholder="room name" required>
+        <div class="btns">
+          <button type="submit" class="button">create</button>
+          <button type="button" class="cancel button" onclick="CreateRoom()">cancel</button>
+        </div>
 
-
+      </form>
+    </div>
+    <!-- container -->
+    <div class="container">
+      <%- include('./partials/nav.ejs') %>
+        <div class="home-content">
+          <div class="profile">
+            <div class="img">
+              <img src="/img/328157463_136435589294620_7570663161007041273_n.webp" alt="">
+            </div>
+            <div class="profile-content">
+              <h1>
+                <%= userData.fullName %>
+              </h1>
+              <a href="/profile/edit">setings <i class="fa-solid fa-gear fa-spin"></i></a>
+            </div>
           </div>
-          <%- include('./partials/footer.ejs') %>
-      </div>
+
+          <div class="menu">
+            <div class="menu-bar">
+              <div class="leftSide">
+                <button onclick="menu('friends')" id="friends-btn">friends</button>
+                <button onclick="menu('rooms')" id="rooms-btn" style="border-bottom: 3px #22668D solid;">rooms</button>
+              </div>
+              <div class="rightSide ">
+                <button class="createRoom" onclick="CreateRoom()">
+                  <i class="fa-solid fa-user-group"></i>
+                </button>
+                <!-- <button class="joinRoom">join room <i class="fa-solid fa-right-to-bracket"></i></button> -->
+              </div>
+            </div>
+            <div class="menu-content">
+              <section class="friends" id="friends" style="display: none; opacity: 0;">
+                <div class="friends-container">
+                  <a href="#" class="friendLink">
+                    <div class="friend">
+                      <div class="Name-Avatar-container">
+                        <div class="name">
+                          <h4>yousef amr</h4>
+                        </div>
+                        <div class="avatar"><img src="/img/328157463_136435589294620_7570663161007041273_n.webp" alt="">
+                          <span></span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </section>
+              <section class="rooms" id="rooms">
+                <div class="rooms-container">
+                  <% chatRooms.forEach(chatRoom=> { %>
+                    <div class="room">
+                      <h4 class="room-name">
+                        <%= chatRoom.roomName %>
+                      </h4>
+                      <div class="">
+                        <a href="/chatRoom/<%= chatRoom._id %>" class="room-link">join the room</a>
+                        <p>online:<span><%= chatRoom.online.length %></span></p>
+                      </div>
+                    </div>
+                    <% }) %>
+                </div>
+
+              </section>
+            </div>
+          </div>
+
+
+
+
+        </div>
+        <%- include('./partials/footer.ejs') %>
+    </div>
 
 
 
 
 
-      <script src="main.js"></script>
-      <script src="socket.io.js"></script>
-      <script>
-        const socket = io();
-      </script>
+    <script src="/main.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- <script src="/socket.io/socket.io.chat.js"></script> -->
+    <script>
+      const socket = io();        
+      
+    </script>
   </body>
 
 </html>
