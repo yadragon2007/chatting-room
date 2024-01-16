@@ -71,16 +71,25 @@
         fullName: '<%= userData.fullName %>',
         userName: '<%= userData.userName %>',
       }
+
       let roomData = {
         _id: '<%= roomData._id %>',
       }
 
       const socket = io();
-      socket.emit('connectedToRoom', userData, roomData);
-
-      socket.on(`connectedToRoom`, (userData, roomId, numberOfUsers) => {
-        
+      socket.on('addId', () => {
+        if (localStorage.getItem('socketId')) {
+          const socketId = JSON.parse(localStorage.getItem('socketId'))
+          socketId.push(socket.id)
+          localStorage.setItem('socketId', JSON.stringify(socketId))
+        } else {
+          const socketId = [socket.id]
+          localStorage.setItem('socketId', JSON.stringify(socketId))
+        }
       })
+      // Send a connection request to the server with user data and join the chat room
+      socket.emit("joinRoom", userData, roomData);
+
     </script>
   </body>
 

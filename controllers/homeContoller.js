@@ -11,7 +11,7 @@ const homePage_index_get = async (req, res) => {
 
     // get public rooms
     const publicRooms = await ChatRooms.find({ privet: false });
-    
+
     // handle privet rooms
     const allPrivetRooms = await ChatRooms.find({ privet: true });
     let privetRooms = [];
@@ -34,6 +34,27 @@ const homePage_index_get = async (req, res) => {
   }
 };
 
+const Rooms_feach_post = async (req, res) => {
+  const { userId } = req.body;
+  // get public rooms
+  const publicRooms = await ChatRooms.find({ privet: false });
+
+  // handle privet rooms
+  const allPrivetRooms = await ChatRooms.find({ privet: true });
+  let privetRooms = [];
+  privetRooms.forEach((room) => {
+    if (room.roomMembers.includes(account.id)) {
+      privetRooms.push(room);
+    }
+  });
+
+  // put privet rooms and public rooms in one array
+  const chatRooms = [...publicRooms, ...privetRooms];
+
+  res.json(chatRooms)
+};
+
 module.exports = {
   homePage_index_get,
+  Rooms_feach_post,
 };

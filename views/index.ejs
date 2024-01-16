@@ -67,17 +67,7 @@
               </section>
               <section class="rooms" id="rooms">
                 <div class="rooms-container">
-                  <% chatRooms.forEach(chatRoom=> { %>
-                    <div class="room">
-                      <h4 class="room-name">
-                        <%= chatRoom.roomName %>
-                      </h4>
-                      <div class="">
-                        <a href="/chatRoom/<%= chatRoom._id %>" class="room-link">join the room</a>
-                        <p>online:<span><%= chatRoom.online.length %></span></p>
-                      </div>
-                    </div>
-                    <% }) %>
+
                 </div>
 
               </section>
@@ -96,11 +86,60 @@
 
 
     <script src="/main.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <!-- <script src="/socket.io/socket.io.chat.js"></script> -->
+
     <script>
-      const socket = io();        
-      
+      window.onload = getRooms();
+
+      async function getRooms() {
+        const rooms = await fetch('/getRooms', {
+          method: 'post',
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: '<%= userData._id %>'
+          })
+        })
+
+        let Rooms = await rooms.json()
+
+        getRoomsDOM(Rooms)
+
+
+        setTimeout(() => {
+          // getRooms()
+        }, 5000)
+      }
+
+      function getRoomsDOM(rooms) {
+        let roomContainer = document.querySelector('.rooms-container')
+        let roomsDOM = '';
+        console.log(rooms)
+
+        for (let i = 0; i < rooms.length; i++) {
+          roomsDOM += `
+          
+          <div class="room">
+            <h4 class="room-name">
+                ${rooms[i].roomName}
+            </h4>
+            <div class="">
+              <a href="/chatRoom/${rooms[i]._id}" class="room-link">join the room</a>
+              <p>online:<span>
+                  ${rooms[i].online.length}
+                </span></p>
+            </div>
+          </div>
+          
+          `
+        }
+
+
+        roomContainer.innerHTML = roomsDOM;
+      }
+
+
+
     </script>
   </body>
 
