@@ -7,11 +7,11 @@ const ChatSchema = new Schema({
   messages: [
     {
       senderData: {
-        name: { type: String },
-        id: { type: String },
+        fullName: { type: String },
+        _id: { type: String },
       },
       messageContent: { type: String },
-      Time: { type: String },
+      Time: { type: Object },
     },
   ],
   privet: { type: Boolean, required: true, default: false },

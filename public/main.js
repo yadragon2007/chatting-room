@@ -31,6 +31,7 @@ function menu(type) {
     }, 250);
   }
 }
+
 function CreateRoom() {
   const createRoomContainer = document.getElementById('createRoom-container')
   
@@ -40,3 +41,4 @@ function CreateRoom() {
     createRoomContainer.style.display = 'none'
   }
 }
+

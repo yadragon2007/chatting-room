@@ -18,40 +18,29 @@
         <div class="content">
           <div class="chat-room">
             <div class="messages" id="messages">
-
-
-
-              <div class="message-container sender">
-                <div class="message">
-                  <div class="message-name">
-                  </div>
-                  <div class="message-content">
-                  </div>
-                  <div class="message-time">
-                  </div>
-                </div>
-              </div>
-
-              <div class="message-container resaver">
-                <div class="message">
-                  <div class="message-name">
-                  </div>
-                  <div class="message-content">
-                  </div>
-                  <div class="message-time">
-                  </div>
-                </div>
-              </div>
-
-
-
-
-
+              <% messages.forEach(message=> { %>
+                <% let sender='sender' %>
+                  <% if (userData._id !=message.senderData._id) { %>
+                    <% sender='receiver' %>
+                      <% } %>
+                        <div class="message-container <%= sender %>">
+                          <div class="message">
+                            <div class="message-name">
+                              <%= message.senderData.fullName %>
+                            </div>
+                            <div class="message-content">
+                              <%= message.messageContent %>
+                            </div>
+                            <div class="message-time">
+                              <%= message.Time.hour %>:<%= message.Time.minute %>
+                            </div>
+                          </div>
+                        </div>
+                        <% }) %>
             </div>
             <div class="send-message">
               <input type="text" id="msg" placeholder="Type your message..." autofocus required />
-              <button onclick="sendMessage(this.id)" id="<% userData._id %>"><i
-                  class="fa-solid fa-paper-plane"></i></button>
+              <button onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
             </div>
           </div>
         </div>
@@ -64,6 +53,7 @@
 
 
     <script src="/main.js"></script>
+    <script src="/time/Time.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
       let userData = {
@@ -77,19 +67,78 @@
       }
 
       const socket = io();
-      socket.on('addId', () => {
-        if (localStorage.getItem('socketId')) {
-          const socketId = JSON.parse(localStorage.getItem('socketId'))
-          socketId.push(socket.id)
-          localStorage.setItem('socketId', JSON.stringify(socketId))
-        } else {
-          const socketId = [socket.id]
-          localStorage.setItem('socketId', JSON.stringify(socketId))
-        }
-      })
-      // Send a connection request to the server with user data and join the chat room
-      socket.emit("joinRoom", userData, roomData);
 
+      // Send a connection request to the server with user data and join the chat room
+      // functions (req)
+      socket.emit("joinRoom", userData, roomData);
+      // send msg
+      function sendMessage() {
+        let msgInput = document.getElementById('msg');
+        // check if the input is empty
+        for (let i in msgInput.value) {
+          const letter = msgInput.value[i];
+          if (letter != ' ') {
+            break;
+          } else {
+            if (i == msgInput.value.length - 1) {
+              return;
+            } else {
+              continue;
+            }
+          }
+        }
+        // handle time
+        const timeData = time()
+        const timeHandler = {
+          hour: `${timeData.hour.hour12}`,
+          minute: timeData.minutes,
+        }
+        // sendMsg emitting
+        socket.emit('sendMsg', userData, roomData, msgInput.value, timeHandler);
+        msgInput.value = '';
+        return;
+      }
+      
+
+
+
+
+
+
+      // call back (res)
+      socket.on('userJoined', (fullName) => {
+        console.log(`User ${fullName} joined the chat`);
+      })
+
+      socket.on('msgSent', (msgData) => {
+        const { senderData, messageContent, Time } = msgData;
+        if (senderData._id == userData._id) {
+          showMessage(senderData, messageContent, Time, 'sender');
+        } else {
+          showMessage(senderData, messageContent, Time, 'receiver');
+        }
+        scroll()
+      })
+      function showMessage(senderData, messageContent, Time, sender) {
+        let messageContainer = document.getElementById('messages')
+
+        messageContainer.innerHTML += `
+        
+        <div class="message-container ${sender}">
+                <div class="message">
+                  <div class="message-name">
+                    ${senderData.fullName}
+                  </div>
+                  <div class="message-content">
+                    ${messageContent}
+                  </div>
+                  <div class="message-time">
+                    ${Time.hour}:${Time.minute}
+                  </div>
+                </div>
+              </div>
+        `
+      }
     </script>
   </body>
 

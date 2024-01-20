@@ -107,14 +107,13 @@
 
 
         setTimeout(() => {
-          // getRooms()
+          getRooms()  
         }, 5000)
       }
 
       function getRoomsDOM(rooms) {
         let roomContainer = document.querySelector('.rooms-container')
         let roomsDOM = '';
-        console.log(rooms)
 
         for (let i = 0; i < rooms.length; i++) {
           roomsDOM += `
@@ -126,7 +125,7 @@
             <div class="">
               <a href="/chatRoom/${rooms[i]._id}" class="room-link">join the room</a>
               <p>online:<span>
-                  ${rooms[i].online.length}
+                  unknown
                 </span></p>
             </div>
           </div>

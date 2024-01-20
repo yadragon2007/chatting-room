@@ -222,7 +222,7 @@
   margin: 20px 0;
 }
 
-.container .content .chat-room .messages .resaver {
+.container .content .chat-room .messages .receiver {
   width: 100%;
   display: flex;
   justify-content: end;
@@ -237,7 +237,7 @@
   box-shadow: inset 10px 10px 95px 7px rgba(255, 166, 0, 1);
 }
 
-.container .content .chat-room .messages .resaver .message {
+.container .content .chat-room .messages .receiver .message {
   background-color: #22668D;
   -webkit-box-shadow: inset 10px 10px 95px 7px #00a2ff;
   -moz-box-shadow: inset 10px 10px 95px 7px #00a2ff;
