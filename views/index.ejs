@@ -86,9 +86,16 @@
 
 
     <script src="/main.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 
     <script>
+      // get rooms when page run for the first time
       window.onload = getRooms();
+      // io real time
+      const socket = io();
+      // update rooms data
+      socket.on('updateRooms', getRooms)
+
 
       async function getRooms() {
         const rooms = await fetch('/getRooms', {
@@ -104,11 +111,6 @@
         let Rooms = await rooms.json()
 
         getRoomsDOM(Rooms)
-
-
-        setTimeout(() => {
-          getRooms()  
-        }, 5000)
       }
 
       function getRoomsDOM(rooms) {
@@ -125,7 +127,7 @@
             <div class="">
               <a href="/chatRoom/${rooms[i]._id}" class="room-link">join the room</a>
               <p>online:<span>
-                  unknown
+                ${rooms[i].online}
                 </span></p>
             </div>
           </div>

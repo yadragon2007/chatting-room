@@ -4,12 +4,16 @@ const { time } = require("../API/Time");
 
 const socket = (io) => {
   io.on("connection", (socket) => {
-    socket.on("joinRoom", (userData, roomData) => {
+    socket.on("joinRoom", async (userData, roomData) => {
       const { _id: userId, fullName } = userData;
       const { _id: roomId } = roomData;
 
       socket.join(roomId);
-      io.to(roomId).emit("userJoined", fullName);
+      const users = io.sockets.adapter.rooms.get(roomId).size;
+
+      await Rooms.findByIdAndUpdate(roomId, { online: users });
+
+      io.emit("updateRooms");
     });
     socket.on("sendMsg", (userData, roomData, msg, time) => {
       const { _id: userId, fullName } = userData;
@@ -27,14 +31,27 @@ const socket = (io) => {
       saveMsgInDataBase(newMessage, roomId);
     });
     socket.on("disconnect", () => {
-      io.emit("sendId");
+      desconnectedUser(io);
     });
   });
 
-  // Check if a user with a specific socket ID is connected
-  const isUserConnected = (socketId) => {
-    return io.sockets.sockets.has(socketId);
+  // handle user disconnection
+  const desconnectedUser = async (io) => {
+    // الفكرة دي مش صح علشان هتعمل لود جامد يا برنس
+    // الكلام ده زبالة و لازم يتعدل
+    const rooms = await Rooms.find();
+
+    rooms.forEach(async (room) => {
+      const { id: roomId } = room;
+      let users = io.sockets.adapter.rooms.get(roomId);
+      if (users == undefined) users = { size: 0 };
+      // console.log(users)
+      await Rooms.findByIdAndUpdate(roomId, { online: users.size });
+    });
+
+    io.emit("updateRooms");
   };
+
   // save Msg in data base
   const saveMsgInDataBase = async (message, roomId) => {
     const room = await Rooms.findById(roomId);

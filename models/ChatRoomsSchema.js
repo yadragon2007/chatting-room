@@ -19,7 +19,7 @@ const ChatSchema = new Schema({
   // roomId: { type: String, required: true },
   // roomPassword: { type: String },
   // roomMembers: { type: Array, required: true },
-  online: { type: Array, default: [] },
+  online: { type: Number, default: 0 },
 });
 
 const publicChat = mongoose.model("chatRooms", ChatSchema);
