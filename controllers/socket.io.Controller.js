@@ -7,17 +7,32 @@ const socket = (io) => {
     socket.on("joinRoom", async (userData, roomData) => {
       const { _id: userId, fullName } = userData;
       const { _id: roomId } = roomData;
+      const socketId = socket.id;
 
-      socket.join(roomId);
-      const users = io.sockets.adapter.rooms.get(roomId).size;
+      let { online } = await Rooms.findById(roomId);
+      // const p = []
+      // check if the user is already online
+      const check = online.find((user) => user.userId == userId);
 
-      await Rooms.findByIdAndUpdate(roomId, { online: users });
-
-      io.emit("updateRooms");
+      if (check) {
+        const onlineUserIds = online.indexOf(check);
+        online[onlineUserIds].ioId.push(socketId);
+        await Rooms.findByIdAndUpdate(roomId, { online });
+      } else {
+        // add new user to the list of users in this chat room
+        online.push({
+          userId: userId,
+          ioId: [socketId],
+        });
+        socket.join(roomId);
+        await Rooms.findByIdAndUpdate(roomId, { online });
+        io.emit("updateRooms");
+      }
     });
     socket.on("sendMsg", (userData, roomData, msg, time) => {
       const { _id: userId, fullName } = userData;
       const { _id: roomId } = roomData;
+
       const newMessage = {
         senderData: {
           fullName: fullName,
@@ -31,25 +46,43 @@ const socket = (io) => {
       saveMsgInDataBase(newMessage, roomId);
     });
     socket.on("disconnect", () => {
-      desconnectedUser(io);
+      const socketId = socket.id;
+
+      desconnectedUser(socketId, io);
     });
   });
 
   // handle user disconnection
-  const desconnectedUser = async (io) => {
-    // الفكرة دي مش صح علشان هتعمل لود جامد يا برنس
-    // الكلام ده زبالة و لازم يتعدل
+  const desconnectedUser = async (socketId, io) => {
     const rooms = await Rooms.find();
 
-    rooms.forEach(async (room) => {
-      const { id: roomId } = room;
-      let users = io.sockets.adapter.rooms.get(roomId);
-      if (users == undefined) users = { size: 0 };
-      // console.log(users)
-      await Rooms.findByIdAndUpdate(roomId, { online: users.size });
+    rooms.forEach((room) => {
+      let { online } = room;
+      const check = online.find((user) => user.ioId.includes(socketId) == true);
+      if (check) deleteUserFromRoomDotOnline(socketId, check, room, io);
     });
 
-    io.emit("updateRooms");
+    return;
+  };
+  const  deleteUserFromRoomDotOnline  = async (
+    socketId,
+    onlineObject,
+    room,
+    io
+  ) => {
+    let { online, _id: roomId } = room;
+    if (onlineObject.ioId.length == 1) {
+      const index = online.indexOf(onlineObject);
+      online.splice(index, 1);
+      await Rooms.findByIdAndUpdate(roomId, { online });
+      io.emit("updateRooms");
+    } else {
+      const userIndex = onlineObject.ioId.indexOf(socketId);
+      onlineObject.ioId.splice(userIndex, 1);
+      const index = online.indexOf(onlineObject);
+      online[index] = onlineObject;
+      await Rooms.findByIdAndUpdate(roomId, { online });
+    }
   };
 
   // save Msg in data base
