@@ -3,53 +3,56 @@
 
 <%- include('./partials/head.ejs') %>
 
-</head>
+  </head>
 
-<body>
-  <%# include('./partials/background.ejs') %>
+  <body>
+    <%# include('./partials/background.ejs') %>
 
 
-    <!-- container -->
-    <div class="container">
-      <%- include('./partials/nav.ejs') %>
+      <!-- container -->
+      <div class="container">
+        <%- include('./partials/nav.ejs') %>
 
-        <div class="content">
-          <form action="/login" method="post" class="acc-form">
-            <div class="title">
-              <h2>sign in</h2>
-            </div>
-            <div class="login-user">
-              <div class="center">
-                <label for="userName">
-                  user name
-                </label>
-                <input type="text" name="userName" class="input" id="userName" placeholder="user Name" required>
-                <label for="password">password</label>
-                <input type="password" name="password" class="input" id="password" placeholder="password" required>
-                <input type="submit" class="submit" value="sing in">
-                <div class="singUpLink">
-                  <a href="/signup">do not have account ?</a>
+          <div class="content">
+            <form action="/login" method="post" class="acc-form">
+              <div class="title">
+                <h2>sign in</h2>
+              </div>
+              <div class="login-user">
+                <div class="center">
+                  <label for="userName">
+                    user name
+                  </label>
+                  <input type="text" name="userName" class="input" id="userName" value="<%= userName %>" placeholder="user Name" required>
+                  <label for="password">password</label>
+                  <input type="password" name="password" class="input" id="password"  placeholder="password" required>
+                  <input type="submit" class="submit" value="sing in">
+                  <% if (err==true) { %>
+                    <div class="err singUpLink contentA">user name or password is invalid</div>
+                    <% } %>
+                      <div class="singUpLink">
+                        <a href="/signup" class="contentA">do not have account ?</a>
+                      </div>
                 </div>
+
               </div>
 
-            </div>
-
-            <div class="hr">
-              <div class=""></div>
-              <p>or</p>
-              <div class=""></div>
-            </div>
+              <div class="hr">
+                <div class=""></div>
+                <p>or</p>
+                <div class=""></div>
+              </div>
               <div class="login-google login-method">
                 <a href="#"><i class="fa-brands fa-google"></i>
                   <p>google</p>
                 </a>
               </div>
-              
-          </form>
-        </div>
-        <%- include('./partials/footer.ejs') %>
 
-    </div>
-</body>
+            </form>
+          </div>
+          <%- include('./partials/footer.ejs') %>
+
+      </div>
+  </body>
 
 </html>

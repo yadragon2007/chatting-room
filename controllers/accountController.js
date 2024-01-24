@@ -2,10 +2,17 @@ const Accounts = require("../models/accountModel");
 const bcrypt = require("bcrypt");
 
 const login_login_get = (req, res) => {
-  res.render("login");
+  res.render("login", {
+    err: false,
+    userName: "",
+  });
 };
 const signUp_signUp_get = (req, res) => {
-  res.render("signUp");
+  res.render("signUp", {
+    err: false,
+    userName: "",
+    fullName: "",
+  });
 };
 
 const signUp_signUp_post = async (req, res) => {
@@ -33,7 +40,7 @@ const signUp_signUp_post = async (req, res) => {
     // redirect to the home page
     res.redirect("/");
   } else {
-    res.redirect("/signup/err/userName");
+    res.redirect(`/signup/err/${fullName}/${userName}`);
   }
 };
 
@@ -52,13 +59,29 @@ const login_login_post = async (req, res) => {
       });
       res.redirect("/");
     } else {
-      res.redirect("/login/err/password");
+      res.redirect(`/login/err/${userName}/`);
     }
   } else {
-    res.redirect("/login/err/userName");
+    res.redirect(`/login/err/${userName}/`);
   }
 };
+const loginErr_login_get = (req, res) => {
+  const { userName } = req.params;
 
+  res.render("login", {
+    err: true,
+    userName,
+  });
+};
+const signUpErr_login_get = (req, res) => {
+  const { userName, fullName } = req.params;
+
+  res.render("signUp", {
+    err: true,
+    userName,
+    fullName,
+  });
+};
 const logout_login_get = (req, res) => {
   res.clearCookie("userData");
   res.redirect("/");
@@ -69,5 +92,7 @@ module.exports = {
   signUp_signUp_get,
   signUp_signUp_post,
   login_login_post,
+  loginErr_login_get,
+  signUpErr_login_get,
   logout_login_get,
 };

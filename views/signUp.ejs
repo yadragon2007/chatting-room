@@ -20,28 +20,31 @@
         <div class="login-user">
           <div class="center">
             <label for="fullName">full name</label>
-            <input type="text" name="fullName" class="input" id="fullName" placeholder="full Name" required>
+            <input type="text" name="fullName" class="input" id="fullName" value="<%= fullName %>" placeholder="full Name" required>
             <label for="userName">user name</label>
-            <input type="text" name="userName" class="input" id="userName" placeholder="user Name" required>
+            <input type="text" name="userName" class="input" id="userName" value="<%= userName %>" placeholder="user Name" required>
             <label for="password">password</label>
             <input type="password" name="password" class="input" id="password" placeholder="password" required>
             <input type="submit" class="submit" value="sign up">
+            <% if (err==true) { %>
+              <div class="err singUpLink contentA">user name is invalid</div>
+              <% } %>
             <div class="singUpLink">
               <a href="/login">already have account ?</a>
             </div>
           </div>
         </div>
 
-        <div class="hr">
+        <!-- <div class="hr">
           <div class=""></div>
           <p>or</p>
           <div class=""></div>
-        </div>
-          <div class="login-google ">
+        </div> -->
+          <!-- <div class="login-google ">
             <a href="#"><i class="fa-brands fa-google"></i>
               <p>google</p>
             </a>
-          </div>
+          </div> -->
           
 
       </form>
