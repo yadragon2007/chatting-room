@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('./partials/head.ejs') %>
+
+  </head>
+
+  <body>
+    <!-- container -->
+    <div class="container">
+      <%- include('./partials/nav.ejs') %>
+        <div class="setting">
+          <div class="glass-background">
+
+            <div class="settingMenu">
+              <h1>Setting</h1>
+              <ul>
+                <a href="/profile/setting/general" style="all: unset;">
+                  <li onclick="settingPage('general')"><i class="fa-solid fa-user"></i> general</li>
+                </a>
+                <a href="/profile/setting/privacy" style="all: unset;">
+                  <li onclick="settingPage('privacy')"><i class="fa-solid fa-shield-halved"></i> privacy</li>
+                </a>
+                <a href="/logout" style="all: unset;">
+                  <li id="danger"><i class="fa-solid fa-right-from-bracket"></i> sign out</li>
+                </a>
+              </ul>
+            </div>
+            <div class="setting-content">
+              <% if (type=='noSetting' ) { %>
+                <div class="no-setting settingPage" id="noPage">
+                  <i class="fa-solid fa-gears"></i>
+                  <p>setting</p>
+                </div>
+
+                <% } else if (type=="general" ) { %>
+                  <div class="general settingPage" id="general">
+                    <form action="" method="post" class="imgForm" enctype="multipart/form-data">
+                      <label for="avatar" class="avatarImg">
+                        <img src="<%= userData.avatar %>" id="profileImgLable" alt="">
+                      </label>
+                      <input type="file" name="avatar" id="avatar" style="display: none;" accept=".jpg,.jpeg,.png,.gif">
+                      <p>
+                        <%= userData.fullName %>
+                      </p>
+                    </form>
+                    <form action="/profile/setting/general" method="post" class="editDataForm settingForm">
+                      <input onchange="generalSubmitBtnSwitch()" type="text" name="fullName" id="fullName" placeholder="Full Name"
+                        value="<%= userData.fullName %>" required>
+                      <!-- <input onchange="generalSubmitBtnSwitch()" type="text" name="userName" id="userName" placeholder="User Name"
+                        value="<%= userData.userName %>" required> -->
+                      <input onchange="generalSubmitBtnSwitch()" type="text" name="bio" id="bio" placeholder="Bio" value="<%= userData.bio %>">
+                      <input type="button" id="generalSubmitBtn" value="Save" class="saveBtn saveBtnDisabled">
+                    </form>
+                  </div>
+                  <% } else if (type=='privacy' ) { %>
+                    <div class="privacy settingPage" id="privacy">
+                      <h2>Privacy Setting</h2>
+                      <form action="/profile/setting/privacy" class="privacyForm settingForm" method="post">
+                        <input type="password" placeholder="old  password" name="oldPassword" required>
+                        <% if (wrongPass) { %>
+                         <p class="err singUpLink contentA" style="font-size: 13px;">Wrong password</p>
+                        <% } %>
+                        <input type="password" placeholder="new  password" name="newPassword" required>
+                        <input type="submit" value="Change Password" class="saveBtn">
+                      </form>
+                    </div>
+                    <% } %>
+
+
+
+            </div>
+          </div>
+        </div>
+        <%- include('./partials/footer.ejs') %>
+    </div>
+
+
+
+
+
+    <script src="/main.js"></script>
+
+    <script>
+      const avatarInput = document.getElementById('avatar');
+      const profileImgLable = document.getElementById('profileImgLable');
+
+      avatarInput.onchange = () => {
+        let reader = new FileReader()
+        reader.readAsDataURL(avatarInput.files[0]);
+        reader.onload = e => {
+          profileImgLable.src = reader.result;
+        }
+        generalSubmitBtnSwitch()
+      }
+
+      function generalSubmitBtnSwitch() {
+        const generalSubmitBtn = document.getElementById('generalSubmitBtn')
+        generalSubmitBtn.classList = 'saveBtn'
+        generalSubmitBtn.type = 'submit'
+      }
+
+    </script>
+  </body>
+
+</html>

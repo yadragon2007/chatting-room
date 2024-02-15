@@ -4,6 +4,7 @@ const { time } = require("../API/Time");
 
 const socket = (io) => {
   io.on("connection", (socket) => {
+
     socket.on("joinRoom", async (userData, roomData) => {
       const { _id: userId, fullName } = userData;
       const { _id: roomId } = roomData;
@@ -64,7 +65,7 @@ const socket = (io) => {
 
     return;
   };
-  const  deleteUserFromRoomDotOnline  = async (
+  const deleteUserFromRoomDotOnline = async (
     socketId,
     onlineObject,
     room,
@@ -84,7 +85,6 @@ const socket = (io) => {
       await Rooms.findByIdAndUpdate(roomId, { online });
     }
   };
-
   // save Msg in data base
   const saveMsgInDataBase = async (message, roomId) => {
     const room = await Rooms.findById(roomId);

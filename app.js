@@ -93,6 +93,9 @@ app.use(account);
 // chat room
 const chattingRoom = require("./routes/chattingRoom");
 app.use(chattingRoom);
+// setting
+const setting = require("./routes/setting");
+app.use(setting);
 
 // 404
 app.use((req, res) => {
