@@ -56,6 +56,11 @@
     <script src="/time/Time.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
+      onkeyup = (e) => {
+        if (e.code == 'Enter') {
+          sendMessage();
+        }
+      }
       let userData = {
         _id: '<%= userData._id %>',
         fullName: '<%= userData.fullName %>',
