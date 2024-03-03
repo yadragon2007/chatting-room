@@ -72,6 +72,12 @@
   box-shadow: inset 0px 0px 113px -18px rgba(142, 205, 221, 0.47);
 }
 
+@media screen and (max-width:500px) {
+  .container .content .acc-form {
+    width: 90%;
+  }
+}
+
 .container .content .acc-form .title {
   width: 100%;
   height: 100%;
