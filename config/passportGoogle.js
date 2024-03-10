@@ -11,22 +11,23 @@ passport.use(
       callbackURL: google.callBack,
     },
     async function (accessToken, refreshToken, profile, cb) {
-      // Accounts.find({ googleId: profile.id }, function (err, user) {
-      //    return cb(err, user);
-      // });
-      const account = await Accounts.findOne({ googleId: profile.id });
-      if (account) {
-        return cb(null, account);
-      } else {
-        const newAccount = new Accounts({
-          method: "Google",
-          googleId: profile.id,
-          fullName: profile.displayName,
-          email: profile._json.email,
-          picture: profile._json.picture,
-        });
-        const account = await newAccount.save();
-        return cb(null, account);
+      try {
+        const account = await Accounts.findOne({ googleId: profile.id });
+        if (account) {
+          return cb(null, account);
+        } else {
+          const newAccount = new Accounts({
+            method: "Google",
+            googleId: profile.id,
+            fullName: profile.displayName,
+            email: profile._json.email,
+            picture: profile._json.picture,
+          });
+          const account = await newAccount.save();
+          return cb(null, account);
+        }
+      } catch (err){
+        console.log(err)
       }
     }
   )

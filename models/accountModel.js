@@ -5,6 +5,7 @@ const userSchema = new Schema({
   fullName: { type: String, required: true },
   userName: { type: String, unique: true },
   password: { type: String },
+  googleId: { type: String },
   bio: { type: String },
   avatar: { type: String, default: "/img/user.webp" },
   method: { type: String },
