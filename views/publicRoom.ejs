@@ -7,6 +7,12 @@
       min-height: 100vh;
       height: auto;
     }
+    a{
+      all: unset;
+      cursor: pointer;
+      color: rgb(42, 80, 114);
+      margin: 0 10px;
+    }
   </style>
   </head>
 
@@ -26,7 +32,9 @@
                         <div class="message-container <%= sender %>">
                           <div class="message">
                             <div class="message-name">
-                              <%= message.senderData.fullName %>
+                              <a href="/profile/<%= message.senderData._id %>">
+                                <%= message.senderData.fullName %>
+                              </a>
                             </div>
                             <div class="message-content">
                               <%= message.messageContent %>

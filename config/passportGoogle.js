@@ -14,6 +14,13 @@ passport.use(
       try {
         const account = await Accounts.findOne({ googleId: profile.id });
         if (account) {
+         const newData = {
+            fullName: profile.displayName,
+            email: profile._json.email,
+            avatar : profile._json.picture,
+          };
+          console.log(newData)
+          await Accounts.findByIdAndUpdate(account.id , newData)
           return cb(null, account);
         } else {
           const newAccount = new Accounts({
@@ -21,7 +28,7 @@ passport.use(
             googleId: profile.id,
             fullName: profile.displayName,
             email: profile._json.email,
-            picture: profile._json.picture,
+            avatar: profile._json.picture,
           });
           const account = await newAccount.save();
           return cb(null, account);
